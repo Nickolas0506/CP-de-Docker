@@ -1,0 +1,48 @@
+# DimDim — CP Docker (Nickolas Davi, RM 564105)
+# Imagens Docker Hub: postgres:16-alpine + build com node:20-alpine
+# Atende: 2 containers, rede, volume nomeado no BD, -p nos dois, -e, -d, RM no nome
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dimdim-db-564105
+    environment:
+      POSTGRES_USER: dimdim
+      POSTGRES_PASSWORD: dimdim_secret
+      POSTGRES_DB: dimdim
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dimdim-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dimdim -d dimdim"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: dimdim-app-564105
+    environment:
+      DATABASE_URL: postgresql://dimdim:dimdim_secret@db:5432/dimdim
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dimdim-net
+
+networks:
+  dimdim-net:
+    driver: bridge
+    name: dimdim-net
+
+volumes:
+  postgres_data:
+    name: dimdim_pgdata_564105
