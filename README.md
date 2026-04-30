@@ -1,31 +1,26 @@
-# CP de Docker — DimDim
+# CP Docker — DimDim
 
-**Nickolas Davi** · RM **564105**
+Nickolas Davi · RM 564105
 
-Dois containers (**app** Node.js + **banco** PostgreSQL) na mesma rede Docker, imagens base do [Docker Hub](https://hub.docker.com).
+Dois containers (Node + PostgreSQL), mesma rede Docker. Imagens: Docker Hub (`postgres:16-alpine`, `node:20-alpine` no build).
 
-## Subir o projeto
-
-Requisito: [Docker Desktop](https://www.docker.com/products/docker-desktop/) (ou Docker Engine + Compose).
+## Rodar
 
 ```bash
 docker compose up -d --build
 ```
 
-- API: <http://localhost:3000> · Health: <http://localhost:3000/health>  
-- Postgres no host: `localhost:5432` (usuário `dimdim`, senha `dimdim_secret`, banco `dimdim`)
+- App: http://localhost:3000  
+- Postgres: `localhost:5432` — user `dimdim`, senha `dimdim_secret`, database `dimdim`
 
-Parar: `docker compose down`
+```bash
+docker compose down
+```
 
-## Documentação
+## Evidências
 
-Instruções detalhadas, evidências e CRUD opcional: [**HOWTO.md**](HOWTO.md)
+```powershell
+.\coletar-evidencias.ps1
+```
 
-## Estrutura
-
-| Arquivo / pasta | Descrição |
-|-----------------|-----------|
-| `docker-compose.yml` | Rede, volume nomeado, serviços `app` e `db` |
-| `app/` | Dockerfile, API (`server.js`), dependências |
-| `scripts/cp2-subir.ps1` | PowerShell: sobe com `docker compose` |
-| `coletar-evidencias.ps1` | Gera pasta `evidencias/` para entrega |
+Gera arquivos em `evidencias/`.

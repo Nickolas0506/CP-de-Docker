@@ -1,7 +1,3 @@
-# DimDim — CP Docker (Nickolas Davi, RM 564105)
-# Imagens Docker Hub: postgres:16-alpine + build com node:20-alpine
-# Atende: 2 containers, rede, volume nomeado no BD, -p nos dois, -e, -d, RM no nome
-
 services:
   db:
     image: postgres:16-alpine
@@ -23,9 +19,7 @@ services:
       retries: 5
 
   app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
+    build: ./app
     container_name: dimdim-app-564105
     environment:
       DATABASE_URL: postgresql://dimdim:dimdim_secret@db:5432/dimdim
